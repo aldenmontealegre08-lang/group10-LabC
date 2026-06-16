@@ -1,0 +1,7 @@
+package com.pos;
+import javax.swing.*; import java.awt.*;
+public class PaymentReviewPanel extends JPanel { private final UserSession s; private final QueryTableModel m=new QueryTableModel(); private final JTable t=new JTable(m);
+ public PaymentReviewPanel(UserSession s){super(new BorderLayout(8,8));this.s=s;JPanel h=new JPanel(new BorderLayout());h.add(UIUtils.title("Customer Payment Verification"),BorderLayout.WEST);JPanel b=new JPanel();JButton refresh=new JButton("Refresh"),verify=new JButton("Verify"),reject=new JButton("Reject");b.add(refresh);b.add(verify);b.add(reject);h.add(b,BorderLayout.EAST);add(h,BorderLayout.NORTH);add(new JScrollPane(t),BorderLayout.CENTER);refresh.addActionListener(e->load());verify.addActionListener(e->act(true));reject.addActionListener(e->act(false));load();}
+ private void load(){try{m.load("SELECT p.payment_id,o.order_no,u.full_name customer,p.amount,p.payment_method,p.reference_no,p.proof_reference,p.status,p.submitted_at,p.verified_at FROM sales_payments p JOIN sales_orders o ON o.order_id=p.order_id LEFT JOIN customer_profiles cp ON cp.customer_id=o.customer_id LEFT JOIN users u ON u.user_id=cp.user_id ORDER BY p.payment_id DESC");}catch(Exception e){UIUtils.error(this,e);}}
+ private void act(boolean ok){int r=t.getSelectedRow();if(r<0)return;try{int id=Integer.parseInt(String.valueOf(t.getValueAt(t.convertRowIndexToModel(r),0)));POSService.verifyPayment(id,s.userId,ok);Audit.log(s,"PAYMENT_REVIEW",id+"="+(ok?"VERIFIED":"REJECTED"));load();}catch(Exception e){UIUtils.error(this,e);}}
+}

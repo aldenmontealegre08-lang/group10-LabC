@@ -1,0 +1,3 @@
+package com.pos;
+import javax.swing.*;
+public class Main { public static void main(String[] args){ SwingUtilities.invokeLater(new Runnable(){ public void run(){ try{ UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); }catch(Exception ignored){} new AuthFrame().setVisible(true); }}); } }

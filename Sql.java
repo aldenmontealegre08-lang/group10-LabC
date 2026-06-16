@@ -1,0 +1,2 @@
+package com.pos;
+public final class Sql { public static String csvList(String[] a){ return String.join(",",a); } public static String placeholders(int n){ StringBuilder s=new StringBuilder(); for(int i=0;i<n;i++){ if(i>0)s.append(","); s.append("?"); } return s.toString(); } public static String assignmentList(String[] a){ StringBuilder s=new StringBuilder(); for(int i=0;i<a.length;i++){ if(i>0)s.append(","); s.append(a[i]).append("=?"); } return s.toString(); } private Sql(){} }

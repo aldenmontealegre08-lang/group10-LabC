@@ -1,0 +1,3 @@
+package com.pos;
+import javax.swing.*; import java.awt.*;
+public final class UIUtils { public static JLabel title(String t){ JLabel l=new JLabel(t); l.setFont(l.getFont().deriveFont(Font.BOLD,19f)); return l; } public static JButton button(String t){ return new JButton(t); } public static void info(Component c,String m){ JOptionPane.showMessageDialog(c,m,AppConstants.APP_NAME,JOptionPane.INFORMATION_MESSAGE); } public static void error(Component c,Exception e){ JOptionPane.showMessageDialog(c,e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE); } public static boolean confirm(Component c,String m){ return JOptionPane.showConfirmDialog(c,m,"Confirm",JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION; } private UIUtils(){} }

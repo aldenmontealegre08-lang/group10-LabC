@@ -1,0 +1,5 @@
+package com.pos;
+import javax.swing.table.AbstractTableModel; import java.sql.*; import java.util.*;
+public class QueryTableModel extends AbstractTableModel { private final java.util.List<String> cols=new ArrayList<String>(); private final java.util.List<Object[]> rows=new ArrayList<Object[]>(); public void load(String sql,Object... params) throws SQLException { cols.clear(); rows.clear(); try(Connection c=DB.getConnection(); PreparedStatement p=c.prepareStatement(sql)){ for(int i=0;i<params.length;i++)p.setObject(i+1,params[i]); try(ResultSet r=p.executeQuery()){ ResultSetMetaData m=r.getMetaData(); for(int i=1;i<=m.getColumnCount();i++)cols.add(m.getColumnLabel(i)); while(r.next()){ Object[] x=new Object[cols.size()]; for(int i=0;i<x.length;i++)x[i]=r.getObject(i+1); rows.add(x); } }} fireTableStructureChanged(); }
+ public int getColumnCount(){return cols.size();} public int getRowCount(){return rows.size();} public String getColumnName(int c){return cols.get(c);} public Object getValueAt(int r,int c){return rows.get(r)[c];} public int findColumnByName(String n){ for(int i=0;i<cols.size();i++) if(cols.get(i).equalsIgnoreCase(n)) return i; return -1; }
+}

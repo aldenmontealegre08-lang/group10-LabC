@@ -1,0 +1,3 @@
+package com.pos;
+import javax.swing.*;import java.awt.*;
+public class UserSimplePanel extends JPanel {private final QueryTableModel m=new QueryTableModel();private final JTable t=new JTable(m);private final String sql;private final Object[] params;public UserSimplePanel(String title,String sql,Object... params){super(new BorderLayout());this.sql=sql;this.params=params;JPanel h=new JPanel(new BorderLayout());h.add(UIUtils.title(title),BorderLayout.WEST);JButton b=new JButton("Refresh");h.add(b,BorderLayout.EAST);add(h,BorderLayout.NORTH);add(new JScrollPane(t),BorderLayout.CENTER);b.addActionListener(e->load());load();}private void load(){try{m.load(sql,params);}catch(Exception e){UIUtils.error(this,e);}}}
